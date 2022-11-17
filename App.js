@@ -1,15 +1,39 @@
 import { useState } from "react";
-import { Button, Modal, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import Money from "./components/Money";
+import InputData from "./components/ImputData";
+import uuid from "react-native-uuid";
 
 export default function App() {
-  const [dinero, setDinero] = useState("0");
   const [mostrar, setMostrar] = useState(false);
+  const [dinero, setDinero] = useState(0);
+  const [type, setType] = useState("");
 
-  
-  const changeTextHandler = (value) => {
-    setDinero(value);
-}
+  const [tranfer, setTransfer] = useState([...productosIniciales]);
+
+  const productosIniciales = [
+    { key: "1", tipo: "Ingreso", dineroImpor: "200" },
+  ];
+
+  const agregarPrecio = (precio, type) => {
+    if (type === "Ingreso") {
+      const productData = {
+        key: uuid.v4(),
+        tipo: type,
+        dineroImpor: dinero + precio,
+      };
+      console.log("Ingreso => " + productData.dineroImpor);
+    } else {
+      const productData = {
+        key: uuid.v4(),
+        tipo: type,
+        dineroImpor: dinero - precio,
+      };
+      console.log("pago=> " + productData.dineroImpor);
+    }
+    //   setProducts(() => [...tranfer, productData]);
+    setMostrar(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -19,27 +43,13 @@ export default function App() {
       <Text
         style={styles.boton}
         onPress={() => {
-          setMostrar(!mostrar);
+          setMostrar(true);
         }}
       >
         +
       </Text>
 
-      <Modal visible={mostrar} animationType={"fade"} transparent={false}>
-
-      <TextInput style={ styles.imputTransac } 
-                pla ceholder='Introduzca la transación' 
-                keyboardType="numeric"
-                onChangeText={ changeTextHandler } 
-                value={ dinero }/>
-
-        <Button
-          title="Cerrar"
-          onPress={() => {
-            setMostrar(false);
-          }}
-        />
-      </Modal>
+      <InputData mostrar={mostrar} agregarPrecio={agregarPrecio} />
     </View>
   );
 }
@@ -52,19 +62,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   modalbody: {
+    flex: 1,
+    flexDirection: "column",
     backgroundColor: "#6f74dd",
-    color: "white,",
-    width: "70%",
-    height: 30,
-    marginTop: 20,
+    backgroundColor: "#6f74dd",
+    alignItems: "center",
+    justifyContent: "center",
   },
   boton: {
-    flexDirection: 'column',
+    flexDirection: "column",
     flex: 1,
     justifyContent: "center",
     textAlign: "center",
     position: "absolute",
-    marginBottom: 10, 
+    marginBottom: 10,
     bottom: 50,
     right: 20,
     width: 40,
@@ -73,8 +84,15 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 20,
   },
-  imputTransac:{
-    flex: 4,
-    color: 'black'
+  imputTransac: {
+    flex: 1,
+    color: "black",
+  },
+  imputText: {
+    flex: 1,
+    color: "black",
+    backgroundColor: "pink",
+    width: 100,
+    height: 50,
   },
 });
