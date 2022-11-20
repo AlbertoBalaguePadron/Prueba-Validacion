@@ -1,14 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
 
 const Money = ({DineroActual}) => {
+
+
     return (
         <View style={ styles.containerProcut }>
             {
+
                 DineroActual >= 0 ? (
                     <Text style={ styles.Positivo }>{DineroActual}</Text>
                 ):(
                     <Text style={ styles.Negativo }>{DineroActual}</Text>
                 )
+                
             }
         </View>
 )}

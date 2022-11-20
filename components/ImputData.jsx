@@ -5,10 +5,12 @@ import SelectDropdown from "react-native-select-dropdown";
 
 const InputData = ({mostrar, agregarPrecio}) => {
 
-  const dataDesplegable = ["Ingreso", "Pago o extracción"];;
+  const dataDesplegable = ["Ingreso", "Pago o extracción"];
   const [precio, setPrecio] = useState('');
   const [type, setType] = useState('');
-
+  const [hora, sethora] = useState('');
+  const [descripcion, setdescripcion] = useState('');
+  
 
     const changeTextHandler = (value) => {
       setPrecio(value);
@@ -18,30 +20,55 @@ const InputData = ({mostrar, agregarPrecio}) => {
       setType(value);
   }
 
+  const changedescriptionhandler = (value) => {
+    setdescripcion(value);
+  }
+
+  const changetimehandler = (value) => {
+    sethora(value);
+  }
 
     const addProductHandler = () => {
-        agregarPrecio(precio, type)
+      if (precio != "" && type != "" && descripcion != "" && hora != "" ){
+        agregarPrecio(precio, type, descripcion, hora );
         setPrecio("");
-      }
-
-
+        setdescripcion("");
+        sethora("");
+      } 
+    }
 
     return (
 
       <Modal visible={mostrar} animationType={"fade"} transparent={false}>
-
         <View style={styles.modalbody}>
 
-          <Text style={styles.imputText}>
+          <Text style={styles.imputTransac}>
             Introduzca la cantidad de la transación y seleccione el modo.
           </Text>
 
           <TextInput
-            style={styles.imputText}
+            style={styles.imputTransac}
             placeholder='Introduzca una cantidad'
             keyboardType="numeric"
             onChangeText={changeTextHandler}
             value={precio}
+          />
+
+          <TextInput
+            style={styles.imputTransac}
+            placeholder='Introduzca una descripción'
+            keyboardType="default"
+            onChangeText={changedescriptionhandler}
+            value={descripcion}
+          />
+
+
+          <TextInput
+            style={styles.imputTransac}
+            placeholder='Introduzca una fecha'
+            keyboardType="default"
+            onChangeText={changetimehandler}
+            value={hora}
           />
 
           <SelectDropdown
@@ -58,8 +85,8 @@ const InputData = ({mostrar, agregarPrecio}) => {
             value={type}
           />
 
-          
         <Button style={ styles.addButton } title="Añadir" onPress={addProductHandler} /> 
+
         </View>
       </Modal>
 )}
@@ -67,7 +94,6 @@ const InputData = ({mostrar, agregarPrecio}) => {
 
 const styles = StyleSheet.create({
      imputTransac: {
-        flex: 4,
         color: "black",
       },
 });

@@ -7,31 +7,35 @@ import uuid from "react-native-uuid";
 export default function App() {
   const [mostrar, setMostrar] = useState(false);
   const [dinero, setDinero] = useState(0);
-  const [type, setType] = useState("");
+  const [ListaMovimientos, setListaMovimientos] = useState([]);
 
-  const [tranfer, setTransfer] = useState([...productosIniciales]);
-
-  const productosIniciales = [
-    { key: "1", tipo: "Ingreso", dineroImpor: "200" },
-  ];
-
-  const agregarPrecio = (precio, type) => {
+  const agregarPrecio = (dineroInport, type, descripcion, hora) => {
     if (type === "Ingreso") {
       const productData = {
         key: uuid.v4(),
         tipo: type,
-        dineroImpor: dinero + precio,
+        dineroInpo: dineroInport,
+        descripcion: descripcion,
+        hora: hora,
       };
-      console.log("Ingreso => " + productData.dineroImpor);
+      if (dinero == 0) {
+        setDinero(dineroInport);
+      } else {
+        setDinero(parseInt(dinero) + parseInt(dineroInport));
+      }
+      setListaMovimientos(() => [...ListaMovimientos, productData]);
     } else {
       const productData = {
         key: uuid.v4(),
         tipo: type,
-        dineroImpor: dinero - precio,
+        dineroInpo: dineroInport,
+        descripcion: descripcion,
+        hora: hora,
       };
-      console.log("pago=> " + productData.dineroImpor);
+
+      setDinero(dinero - dineroInport);
+      setListaMovimientos(() => [...ListaMovimientos, productData]);
     }
-    //   setProducts(() => [...tranfer, productData]);
     setMostrar(false);
   };
 
