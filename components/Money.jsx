@@ -4,9 +4,7 @@ const Money = ({DineroActual}) => {
 
     return (
         <View style={ styles.containerProcut }>
-
             <Text style={ DineroActual >= 0 ?  styles.Positivo : styles.Negativo }>{DineroActual}</Text>
-            
         </View>
 )}
 

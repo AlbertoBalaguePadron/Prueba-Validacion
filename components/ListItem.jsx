@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-const ListItem = ({ id, tipo, dineroInpo, descripcion, hora }) => {
+const ListItem = ({ id, tipo, dineroInpo, descripcion, hora , onTransacRemove}) => {
 
     return (
         <View style={styles.listItem}>
-            <Pressable style={{flexDirection: "row", alignItems: "center"}} onPress={() => console.log("Hora quiero k me elimines")} >
+            <Pressable style={{flexDirection: "row", alignItems: "center"}} onPress={() => onTransacRemove(id) } >
             <View >   
                 <Text style={styles.textType} >{tipo} Cantidad : {dineroInpo}</Text>   
                 <Text style={styles.textType} >{descripcion}</Text>

@@ -19,22 +19,10 @@ import uuid from "react-native-uuid";
 export default function App() {
   const [mostrar, setMostrar] = useState(false);
   const [dinero, setDinero] = useState(0);
-  const [ListaMovimientos, setListaMovimientos] = useState([
-    {
-      key: uuid.v4(),
-      tipo: "Ingreso",
-      dineroInpo: 1000,
-      descripcion: "descripcion",
-      hora: "20 de agosto de 2022 a las 13:21",
-    },
-    {
-      key: uuid.v4(),
-      tipo: "Pago o extracción",
-      dineroInpo: 1000,
-      descripcion: "descripcion",
-      hora: "20 de agosto de 2022 a las 13:21",
-    },
-  ]);
+
+  const hoy = new Date(Date.now());
+
+  const [ListaMovimientos, setListaMovimientos] = useState([]);
 
   const agregarPrecio = (dineroInport, type, descripcion, hora) => {
     if (type === "Ingreso") {
@@ -66,6 +54,22 @@ export default function App() {
     setMostrar(false);
   };
 
+  const removeTransactHandler = (Id) => {
+    let MovimientoEliminar = ListaMovimientos.find(
+      (transacion) => transacion.key === Id
+    );
+
+    if (MovimientoEliminar.tipo == "Ingreso") {
+      setDinero(parseInt(dinero) - parseInt(MovimientoEliminar.dineroInpo));
+    } else {
+      setDinero(parseInt(dinero) + parseInt(MovimientoEliminar.dineroInpo));
+    }
+
+    setListaMovimientos(() =>
+      ListaMovimientos.filter((Movimiento) => Movimiento.key !== Id)
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Money DineroActual={dinero} />
@@ -87,7 +91,7 @@ export default function App() {
                   dineroInpo={dineroInpo}
                   descripcion={descripcion}
                   hora={hora}
-                  // onProductRemove={removeProductHandler}
+                  onTransacRemove={removeTransactHandler}
                 />
               );
             }}
@@ -102,7 +106,7 @@ export default function App() {
             setMostrar(true);
           }}
         >
-           +
+          +
         </Text>
       </View>
 
