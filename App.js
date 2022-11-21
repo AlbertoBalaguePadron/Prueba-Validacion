@@ -1,13 +1,40 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import Money from "./components/Money";
 import InputData from "./components/ImputData";
+import ListItem from "./components/ListItem";
 import uuid from "react-native-uuid";
+
+//import { nombre } from "./components/constantes";
+// console.log(nombre); con esto lalmas a una función aparte dentro de otro fichero
+// probar despues
 
 export default function App() {
   const [mostrar, setMostrar] = useState(false);
   const [dinero, setDinero] = useState(0);
-  const [ListaMovimientos, setListaMovimientos] = useState([]);
+  const [ListaMovimientos, setListaMovimientos] = useState([
+    {
+      key: uuid.v4(),
+      tipo: "Ingreso",
+      dineroInpo: 1000,
+      descripcion: "descripcion",
+      hora: "20 de agosto de 2022 a las 13:21",
+    },
+    {
+      key: uuid.v4(),
+      tipo: "Pago o extracción",
+      dineroInpo: 1000,
+      descripcion: "descripcion",
+      hora: "20 de agosto de 2022 a las 13:21",
+    },
+  ]);
 
   const agregarPrecio = (dineroInport, type, descripcion, hora) => {
     if (type === "Ingreso") {
@@ -23,7 +50,7 @@ export default function App() {
       } else {
         setDinero(parseInt(dinero) + parseInt(dineroInport));
       }
-      setListaMovimientos(() => [...ListaMovimientos, productData]);
+      setListaMovimientos([...ListaMovimientos, productData]);
     } else {
       const productData = {
         key: uuid.v4(),
@@ -34,7 +61,7 @@ export default function App() {
       };
 
       setDinero(dinero - dineroInport);
-      setListaMovimientos(() => [...ListaMovimientos, productData]);
+      setListaMovimientos([...ListaMovimientos, productData]);
     }
     setMostrar(false);
   };
@@ -42,16 +69,42 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Money DineroActual={dinero} />
-      <Text>Posición Lista </Text>
 
-      <Text
-        style={styles.boton}
-        onPress={() => {
-          setMostrar(true);
-        }}
-      >
-        +
-      </Text>
+      <View style={styles.ListTransac}>
+        {!ListaMovimientos.length ? (
+          <Text>No hay Transaciones actualmente </Text>
+        ) : (
+          <FlatList
+            data={ListaMovimientos}
+            renderItem={(prodata) => {
+              const { key, tipo, dineroInpo, descripcion, hora } = prodata.item;
+              // console.log(key, tipo, dineroInpo, descripcion, hora);
+              return (
+                <ListItem
+                  key={key}
+                  id={key}
+                  tipo={tipo}
+                  dineroInpo={dineroInpo}
+                  descripcion={descripcion}
+                  hora={hora}
+                  // onProductRemove={removeProductHandler}
+                />
+              );
+            }}
+          />
+        )}
+      </View>
+
+      <View style={styles.boton}>
+        <Text
+          style={styles.textBoton}
+          onPress={() => {
+            setMostrar(true);
+          }}
+        >
+           +
+        </Text>
+      </View>
 
       <InputData mostrar={mostrar} agregarPrecio={agregarPrecio} />
     </View>
@@ -62,8 +115,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#6f74dd",
+    justifyContent: "flex-start",
     alignItems: "center",
-    justifyContent: "center",
+    width: "100%",
+  },
+  ListTransac: {
+    marginTop: 15,
+    marginBottom: 20,
+    width: 500,
+    height: 650,
+    alignItems: "center",
+    borderColor: "10px solid pink",
   },
   modalbody: {
     flex: 1,
@@ -74,12 +136,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   boton: {
-    flexDirection: "column",
-    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
     textAlign: "center",
     position: "absolute",
-    marginBottom: 10,
     bottom: 50,
     right: 20,
     width: 40,
@@ -88,6 +149,10 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 20,
   },
+  textBoton: {
+    fontSize: 25,
+    color: "#6f74dd",
+  },
   imputTransac: {
     flex: 1,
     color: "black",
@@ -95,7 +160,6 @@ const styles = StyleSheet.create({
   imputText: {
     flex: 1,
     color: "black",
-    backgroundColor: "pink",
     width: 100,
     height: 50,
   },

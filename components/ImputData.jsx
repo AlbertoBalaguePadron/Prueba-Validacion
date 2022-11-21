@@ -29,8 +29,15 @@ const InputData = ({mostrar, agregarPrecio}) => {
   }
 
     const addProductHandler = () => {
-      if (precio != "" && type != "" && descripcion != "" && hora != "" ){
-        agregarPrecio(precio, type, descripcion, hora );
+      if (precio != "" && type != "" && descripcion != "" ){
+        if(hora == ""){
+          const hoy = new Date(Date.now());
+
+          sethora(hoy.toUTCString());
+          agregarPrecio(precio, type, descripcion, hoy.toUTCString() );
+        } else {
+          agregarPrecio(precio, type, descripcion, hora );
+        }
         setPrecio("");
         setdescripcion("");
         sethora("");
