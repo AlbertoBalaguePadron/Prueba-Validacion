@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import { colors } from "../../themes/colors";
 
 const Money = ({DineroActual}) => {
 
@@ -13,17 +14,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: "#00227b",
+        backgroundColor: colors.normal.Monedero,
         width: '90%',
         height: 90,
         borderRadius: 5,
         marginTop: 40,
     },
     Positivo: {
-        color: 'white',
+        color: colors.normal.white,
     },  
     Negativo: {
-        color: 'red',
+        color: colors.normal.red,
     },
 });
 

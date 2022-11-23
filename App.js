@@ -1,15 +1,9 @@
 import { useState } from "react";
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import Money from "./components/Money";
-import InputData from "./components/ImputData";
-import ListItem from "./components/ListItem";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import Money from "./components/Outputs/Money";
+import InputData from "./components/Inputs/InputData";
+import ListItem from "./components/Outputs/ListItem";
+import { colors } from "./themes/colors";
 import uuid from "react-native-uuid";
 
 //import { nombre } from "./components/constantes";
@@ -19,8 +13,6 @@ import uuid from "react-native-uuid";
 export default function App() {
   const [mostrar, setMostrar] = useState(false);
   const [dinero, setDinero] = useState(0);
-
-  const hoy = new Date(Date.now());
 
   const [ListaMovimientos, setListaMovimientos] = useState([]);
 
@@ -54,9 +46,9 @@ export default function App() {
     setMostrar(false);
   };
 
-  const removeTransactHandler = (Id) => {
+  const removeTransactHandler = (id) => {
     let MovimientoEliminar = ListaMovimientos.find(
-      (transacion) => transacion.key === Id
+      (transacion) => transacion.key === id
     );
 
     if (MovimientoEliminar.tipo == "Ingreso") {
@@ -66,8 +58,19 @@ export default function App() {
     }
 
     setListaMovimientos(() =>
-      ListaMovimientos.filter((Movimiento) => Movimiento.key !== Id)
+      ListaMovimientos.filter((Movimiento) => Movimiento.key !== id)
     );
+  };
+
+  const onTransacModified = (id) => {
+    
+    let MovimientoModificar = ListaMovimientos.find(
+      (transacion) => transacion.key === id
+    );
+
+
+
+
   };
 
   return (
@@ -82,7 +85,6 @@ export default function App() {
             data={ListaMovimientos}
             renderItem={(prodata) => {
               const { key, tipo, dineroInpo, descripcion, hora } = prodata.item;
-              // console.log(key, tipo, dineroInpo, descripcion, hora);
               return (
                 <ListItem
                   key={key}
@@ -92,6 +94,7 @@ export default function App() {
                   descripcion={descripcion}
                   hora={hora}
                   onTransacRemove={removeTransactHandler}
+                  onTransacModified={onTransacModified}
                 />
               );
             }}
@@ -118,7 +121,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#6f74dd",
+    backgroundColor: colors.normal.primary,
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
@@ -129,13 +132,11 @@ const styles = StyleSheet.create({
     width: 500,
     height: 650,
     alignItems: "center",
-    borderColor: "10px solid pink",
   },
   modalbody: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#6f74dd",
-    backgroundColor: "#6f74dd",
+    backgroundColor: colors.normal.secondary,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -149,21 +150,22 @@ const styles = StyleSheet.create({
     right: 20,
     width: 40,
     height: 40,
-    backgroundColor: "white",
-    color: "black",
+    backgroundColor: colors.normal.white,
+    color: colors.normal.black,
     borderRadius: 20,
   },
   textBoton: {
+    marginBottom: 3,
     fontSize: 25,
-    color: "#6f74dd",
+    color: colors.normal.primary,
   },
   imputTransac: {
     flex: 1,
-    color: "black",
+    color: colors.normal.black,
   },
   imputText: {
     flex: 1,
-    color: "black",
+    color: colors.normal.black,
     width: 100,
     height: 50,
   },
