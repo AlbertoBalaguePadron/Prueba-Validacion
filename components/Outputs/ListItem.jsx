@@ -17,11 +17,11 @@ const ListItem = ({ id, tipo, dineroInpo, descripcion, hora , onTransacRemove}) 
                         Eliminar
                     </Text>
                 </Pressable>
-                <Pressable style={{flexDirection: "row", alignItems: "center", width: 100,}} onPress={() => onTransacModified(id) } >
+                {/* <Pressable style={{flexDirection: "row", alignItems: "center", width: 100,}} onPress={() => onTransacModified(id) } >
                     <Text style={styles.textType} >
                         Modificar
                     </Text>
-                </Pressable>
+                </Pressable> */}
             </View>
         
         </View>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
     textTypeDelete:{
         marginTop: 5, 
-        marginBottom: 10, 
+        marginBottom: 5, 
         marginLeft: 10, 
         flex: 1,        
         color: colors.normal.red,
